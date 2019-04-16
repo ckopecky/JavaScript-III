@@ -8,72 +8,145 @@
   Each constructor function has unique properties and methods that are defined in their block comments below:
 */
   
+//constructor function for GameObject:
 
 function GameObject(attributes){
   this.createdAt = attributes.createdAt;
   this.dimensions = attributes.dimensions;
-  this.destroy = function (){
-    return `${this.name} was removed from the game`;
-  };
+  // this.destroy = function (){
+  //   return `${this.name} was removed from the game`;
+  // };
 }
 
-CharacterStats.prototype = Object.create(GameObject.prototype);
+//methods of the GameObject constructor
+GameObject.prototype.destroy = function(){
+  return `${this.name} was removed from the game`;
+}
+
+//CharacterStats constructor function:
 function CharacterStats(characterStatsAttributes){
+  //call lets us gain access to the GameObject attributes in addition to the characterStatsAttributes
   GameObject.call(this, characterStatsAttributes);
-    this.hp = characterStatsAttributes.hp;
-    this.name = characterStatsAttributes.name;
-    this.takeDamage = function (){
-      `${this.name} took damage.`
-    };
+  this.healthPoints = characterStatsAttributes.healthPoints;
+  this.name = characterStatsAttributes.name;
+  // this.takeDamage = function (){
+  //   `${this.name} took damage.`
+  // };
 }
 
+//Gives CharacterStats access to all the methods that GameObject has. 
+CharacterStats.prototype = Object.create(GameObject.prototype);
 
-Humanoid.prototype = Object.create(CharacterStats.prototype);
+//CharacterStats methods: 
+CharacterStats.prototype.takeDamage = function(){
+  return `${this.name} took damage.`;
+}
+
+//Humanoid constructor function
 function Humanoid(humanoidAttributes){
+  //call allows us access to CharacterStats attributes in addition to the humanoid's own attributes
   CharacterStats.call(this, humanoidAttributes);
-    this.faction = humanoidAttributes.faction;
-    this.weapons = humanoidAttributes.weapons;
-    this.language = humanoidAttributes.language;
-    this.greet = function (){
-      return `${this.name} offers a greeting in ${this.language}.`;
-    };
-}
-Hero.prototype = Object.create(Humanoid.prototype);
-function Hero(heroAttributes){
-  Humanoid.call(this, heroAttributes);
-    this.magic = heroAttributes.magic;
-    this.defenseMechanisms = heroAttributes.defenseMechanisms;
-    this.allies = heroAttributes.allies;
-    this.attack = function (){
-      //causes 3 dmg to villain
-    };
-    this.masterAttack = function (){
-      //causes super awesome 5dmg attack to villain
-    };
-    this.usesMagic = function (){
-      //uses magic to cause 4 dmg to villain
-    };
+  this.faction = humanoidAttributes.faction;
+  this.weapons = humanoidAttributes.weapons;
+  this.language = humanoidAttributes.language;
+  this.team = humanoidAttributes.team;
+  // this.greet = function (){
+  //   return `${this.name} offers a greeting in ${this.language}.`;
+  // };
 }
 
-Villain.prototype = Object.create(Humanoid.prototype);
-function Villain(villainAttributes){
-  Humanoid.call(this, villainAttributes);
-    this.magic = villainAttributes.magic;
-    this.defenseMechanisms = villainAttributes.defenseMechanisms;
-    this.allies = villainAttributes.allies;
-    this.firstAttack = function (){
-      //causes 1 dmg to hero
-    };
-    this.secondAttack = function (){
-      //causes super awesome 5dmg attack to hero
-    };
-    this.thirdAttack = function (){
-      //causes 2 dmg to hero
-    }
-    this.usesMagic = function (){
-      //uses magic to cause 3 dmg to hero
-    };
+//Gives Humanoids access to all the methods that CharacterStats has. 
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+//Humanoid methods:
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}.`;
 }
+
+//Hero constructor function:
+function Hero(heroAttributes){
+  //call allows the access to attributes from Humanoid plus all the heroAttributes
+  Humanoid.call(this, heroAttributes);
+  this.magic = heroAttributes.magic;
+  this.defenseMechanisms = heroAttributes.defenseMechanisms;
+  this.allies = heroAttributes.allies;
+  // this.attack = function (){
+  //   //causes 3 dmg to villain
+  // };
+  // this.masterAttack = function (){
+  //   //causes super awesome 5dmg attack to villain
+  // };
+  // this.usesMagic = function (){
+  //   //uses magic to cause 4 dmg to villain
+  // };
+}
+
+//Allows access to all the methods from Humanoid
+Hero.prototype = Object.create(Humanoid.prototype);
+
+//Hero Methods:
+
+Hero.prototype.attack = function() {
+  //cause 3 dmg to villain
+  return evil.healthPoints = evil.healthPoints - 3;
+}
+
+Hero.prototype.masterAttack = function() {
+  //cause 5 dmg to villain
+  return evil.healthPoints = evil.healthPoints - 5;
+}
+
+Hero.prototype.usesMagic = function(){
+  //uses magic to cause 4 dmg to villain
+  return evil.healthPoints = evil.healthPoints - 4;
+}
+
+function Villain(villainAttributes){
+  //allows access to humanoid attributes in addition to villain attributes
+  Humanoid.call(this, villainAttributes);
+  this.magic = villainAttributes.magic;
+  this.defenseMechanisms = villainAttributes.defenseMechanisms;
+  this.allies = villainAttributes.allies;
+  // this.firstAttack = function (){
+  //   //causes 1 dmg to hero
+  // };
+  // this.secondAttack = function (){
+  //   //causes super awesome 5dmg attack to hero
+  // };
+  // this.thirdAttack = function (){
+  //   //causes 2 dmg to hero
+  // }
+  // this.usesMagic = function (){
+  //   //uses magic to cause 3 dmg to hero
+  // };
+}
+
+//lets us inherit all the Humanoid's methods
+Villain.prototype = Object.create(Humanoid.prototype);
+
+//Villain methods:
+Villain.prototype.firstAttack = function() {
+  //causes 1 dmg to hero
+  return link.healthPoints = link.healthPoints - 1;
+}
+
+Villain.prototype.secondAttack = function() {
+  //causes super awesome 5dmg attack to hero
+  return link.healthPoints = link.healthPoints - 5;
+}
+
+Villain.prototype.thirdAttack = function() {
+  //causes 2 dmg to hero
+  return link.healthPoints = link.healthPoints - 2;
+}
+
+Villain.prototype.usesMagic = function() {
+  //uses magic to cause 3 dmg to hero
+  return link.healthPoints = link.healthPoints - 3;
+}
+
+
+
 /*
   === GameObject ===
   * createdAt
@@ -165,7 +238,7 @@ function Villain(villainAttributes){
       width: 2,
       height: 4,
     },
-    hp: 18,
+    healthPoints: 18,
     name: 'Link',
     faction: 'Hyrule',
     weapons: [
@@ -186,7 +259,7 @@ function Villain(villainAttributes){
       width: 1,
       height:6,
     },
-   hp:35,
+   healthPoints:35,
    name: 'Ganondorf',
    weapons: [
     'Sword',
@@ -206,7 +279,12 @@ function Villain(villainAttributes){
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
   console.log(link.language);
-  console.log(evil.defenseMechanisms)
+  console.log(evil.defenseMechanisms);
+  console.log(link.healthPoints);
+  console.log(evil.firstAttack());
+  console.log(link.usesMagic());
+  console.log(link.healthPoints);
+
 
 
   // Stretch task: 
